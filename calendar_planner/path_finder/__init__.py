@@ -21,11 +21,9 @@ def create_graph_from_calendar(calendar, hierarchy: list) -> nx.Graph:
     adj_matrix = pd.DataFrame(np.zeros((n, n)), columns=cols, index=cols, dtype=int)
 
     # add edges between 'layers' in adj matrix
-    for i in range(len(hierarchy) - 1):
-        first_layer = hierarchy[i]
-        second_layer = hierarchy[i + 1]
-        adj_matrix.loc[adj_matrix.index.str.startswith(first_layer), 
-                       adj_matrix.columns.str.startswith(second_layer)] = 1
+    for i in range(len(hierarchy)):
+        course = hierarchy[i]
+        adj_matrix.loc[adj_matrix.index.str.startswith(course), ~adj_matrix.columns.str.startswith(course)] = 1
         
     return nx.from_pandas_adjacency(adj_matrix, create_using=nx.DiGraph())
 
@@ -34,28 +32,6 @@ def draw_as_nn(G: nx.Graph, labels=False) -> None:
     """ Draws graph in neural network format """
     pos = graphviz_layout(G, prog='dot', args="-Grankdir=LR")
     nx.draw(G,with_labels=labels,pos=pos)
-
-
-def remove_edges_overlapping(G: nx.Graph, calendar) -> None:
-    remove_edges = []
-
-    for node in G:
-        course, group = node.split("---")
-        neighbors = pd.DataFrame(
-            pd.Series(G.neighbors(node))\
-                .map(lambda x: x.split("---"))\
-                .to_list()
-        ).rename(columns={0: "course", 1: "group"})
-        
-        for _, row in neighbors.iterrows():
-            overlap = calendar.courses[course]\
-                        .practical_lectures[group]\
-                        .overlaps_with_course(calendar, row["course"], row["group"])
-            if overlap: 
-                remove_edges.append((node, row["course"] + "---" + row["group"]))
-                
-    G.remove_edges_from(remove_edges)
-    G.remove_nodes_from(list(nx.isolates(G)))
 
 
 def full_path_count(G: nx.Graph, hierarchy: list) -> int:
@@ -77,6 +53,34 @@ def full_path_count(G: nx.Graph, hierarchy: list) -> int:
     ]
 
     return len(has_paths)
+
+
+###
+# 
+#   Onderstaande code werkt niet correct - verkeerde aanpak
+#
+###
+def remove_edges_overlapping(G: nx.Graph, calendar) -> None:
+    remove_edges = []
+
+    for node in G:
+        course, group = node.split("---")
+        neighbors = pd.DataFrame(
+            pd.Series(G.neighbors(node))\
+                .map(lambda x: x.split("---"))\
+                .to_list()
+        ).rename(columns={0: "course", 1: "group"})
+        
+        for _, row in neighbors.iterrows():
+            overlap = calendar.courses[course]\
+                        .practical_lectures[group]\
+                        .overlaps_with_course(calendar, row["course"], row["group"])
+            if overlap: 
+                remove_edges.append((node, row["course"] + "---" + row["group"]))
+                
+    G.remove_edges_from(remove_edges)
+    G.remove_nodes_from(list(nx.isolates(G)))
+
 
 
 def brute_force_all(calendar, options):
