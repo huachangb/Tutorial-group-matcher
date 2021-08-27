@@ -86,7 +86,7 @@ def brute_force_all(calendar, options):
         remove_edges_overlapping(G, calendar)
         
         if full_path_count(G, hierarchy) > 0:
-            return G
+            return G, hierarchy
 
-    return nx.Graph()
+    return nx.Graph(), []
 
