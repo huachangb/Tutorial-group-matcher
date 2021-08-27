@@ -9,15 +9,10 @@ class DateTimeRange():
         self.end = start + timedelta(hours=hours)
     
     def overlaps(self, timerange) -> bool:
-        """ Checks if two time ranges overlap """
-        # check if courses start at the same time
-        start_same = self.start == timerange.start
-        
-        # check if courses start while the other course is going
+        """ Checks if two time ranges overlap """        
         s1 = self.start <= timerange.start < self.end
         s2 = timerange.start <= self.start < timerange.end        
-        
-        return start_same or s1 or s2
+        return s1 or s2
 
 
 def parse_time(datetime_str: str) -> str:

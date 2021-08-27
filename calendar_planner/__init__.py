@@ -1,46 +1,8 @@
 import pandas as pd
-from datetime import datetime
-from .custom_datetime import DateTimeRange, parse_date, parse_time, to_datetime
-
-class ClassEvent():
-    def __init__(self, course: str, location: str, start_time: int, duration: int, date:datetime, weeks:list) -> None:
-        self.course = course
-        self.location = location
-        self.duration = duration
-        self.weeks = weeks
-        self.datetime = date.replace(hour=start_time)
-        self.datetime_range = DateTimeRange(self.datetime, duration)
-        self.type = "General"
-        
-    def __str__(self):
-        return f"{self.course} - {self.type}, from {parse_time(self.datetime_range.start)} to {parse_time(self.datetime_range.end)} on {parse_date(self.datetime)}"
-        
-class Werkcollege(ClassEvent):
-    def __init__(self, group, course, location: str, start_time: int, duration: int, date:datetime, weeks:list) -> None:
-        super(Werkcollege, self).__init__(course, location, start_time, duration, date, weeks)
-        self.group = group
-        self.type = "Werkcollege"
-
-class Hoorcollege(ClassEvent):
-    def __init__(self, course:str, location: str, start_time: int, duration: int, date:datetime, weeks:list) -> None:
-        super(Hoorcollege, self).__init__(course, location, start_time, duration, date, weeks)
-        self.type = "Hoorcollege"
-
-class Course():
-    def __init__(self, title):
-        self.title = title
-        self.hoorcolleges = []
-        self.werkcolleges = []
-        self.examens = [] # maybe in the future
-        
-    def add_hoorcollege(self, hoorcollege):
-        assert isinstance(hoorcollege, Hoorcollege)
-        self.hoorcolleges.append(hoorcollege)
-        
-        
-    def add_werkcollege(self, werkcollege):
-        assert isinstance(werkcollege, Werkcollege)
-        self.werkcolleges.append(werkcollege)
+from calendar_planner.custom_datetime import to_datetime
+from calendar_planner.courses.lecture import Lecture
+from calendar_planner.courses.practical_lecture import PracticalLecture
+from calendar_planner.courses.course import Course
 
 class Calendar():
     def __init__(self):
@@ -56,6 +18,7 @@ class Calendar():
     def add_course(self, course):
         """ Add course to calendar """
         assert isinstance(course, Course)
+        assert course.title not in self.courses
         self.courses[course.title] = course
         
     
@@ -69,32 +32,38 @@ class Calendar():
         """
         cal = pd.read_excel(path)
         cal = cal.loc[:,["Type", "Description", "Groups", "Locations", "Weeks", "StartTime", "Duration", "StartDate"]]\
-            .assign(Groups=cal["Groups"].str.split(", "))\
-            .explode("Groups")
+                    .assign(Groups=cal["Groups"].str.split(", "))\
+                    .explode("Groups")
         cal["StartDate"] = cal["StartDate"].map(to_datetime)
         
         course = Course(title if isinstance(title, str) else path)
         
-        for index, row in cal.iterrows():
+        for _, row in cal.iterrows():
             class_type = row["Type"]
             if class_type in self.exams: continue
                 
             location = row["Locations"]
             weeks = row["Weeks"].split(",")
-            start_time = row["StartTime"]
             duration = row["Duration"]
-            start_date = row["StartDate"]
+            start_date = row["StartDate"].replace(hour=row["StartTime"])
             description = row["Description"]
             description = description.lower() if isinstance(description, str) else ""
-            
+            schedule = [
+                {
+                    "description": description,
+                    "start_date": start_date,
+                    "duration": duration,
+                    "location": location
+                } for _ in weeks
+            ]
             
             if class_type not in self.non_group_lectures and not any(x in description for x in self.optional):
                 group = row["Groups"].replace("Group ", "")
-                werkcollege = Werkcollege(group, title, location, start_time, duration, start_date, weeks)
-                course.add_werkcollege(werkcollege)
+                practical = PracticalLecture(title, schedule, group)
+                course.add_practical_lecture(group, practical)
             else:
-                hoorcollege = Hoorcollege(title, location, start_time, duration, start_date, weeks)
-                course.add_hoorcollege(hoorcollege)
+                lecture = Lecture(title, schedule)
+                course.add_lecture(lecture)
                 
         
         self.courses[title] = course   
@@ -108,7 +77,3 @@ class Calendar():
             title = value if isinstance(value, str) else key 
             self.add_course_from_excel(path=key, title=title)
             
-            
-    
-    def optimal_planning(self):
-        ...
