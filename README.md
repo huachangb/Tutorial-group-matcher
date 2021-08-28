@@ -20,9 +20,9 @@ To-do:
 ```python
 from calendar_planner import Calendar
 
-# dictionary of subjects and path to file
+# dictionary of courses and path to file
 course_paths = {
-    "path-to-excel-file": "course-name"
+    "course name": "path-to-excel-file"
 }
 
 # create calendar

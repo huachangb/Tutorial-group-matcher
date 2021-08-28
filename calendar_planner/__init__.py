@@ -85,8 +85,7 @@ class Calendar():
         and the course title as value. If value is None, then its key will be used as
         course name"""
         for key, value in filenames.items():
-            title = value if isinstance(value, str) else key 
-            self.add_course_from_excel(path=key, title=title)
+            self.add_course_from_excel(path=value, title=key)
             
     
     def find_all_schedules(self, format: bool = False) -> pd.DataFrame:
