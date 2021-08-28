@@ -48,7 +48,7 @@ class ClassBase():
         })
 
 
-    def add_lecture_fixed(self, lecture: dict):
+    def add_formatted_lecture(self, lecture: dict):
         """ Add an already formatted lecture to the list of lectures """
         self.schedule.append(lecture)
 

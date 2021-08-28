@@ -31,6 +31,8 @@ class Course():
     
     def overlaps(self, time_range, group) -> bool:
         """ Checks if schedule of group overlaps with the lectures of self """
-        overlap_lectures = any(lecture.overlaps_with_time_range(time_range) for lecture in self.lectures)
-        overlap_practical_lectures = self.practical_lectures[group].overlaps_with_time_range(time_range)
+        overlap_lectures = any(lecture.overlaps_with_time_range(time_range) 
+                                for lecture in self.lectures)
+        overlap_practical_lectures = self.practical_lectures[group]\
+                                        .overlaps_with_time_range(time_range)
         return overlap_lectures or overlap_practical_lectures

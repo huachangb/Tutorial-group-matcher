@@ -9,7 +9,7 @@ class PracticalLecture(ClassBase):
     def add_lectures(self, schedule: list) -> None:
         """ Merges list of lectures """
         for lecture in schedule:
-            self.add_lecture_fixed(lecture)
+            self.add_formatted_lecture(lecture)
 
     
     def overlaps_with_course(self, calendar, course_title, group) -> bool:

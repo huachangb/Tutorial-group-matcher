@@ -1,6 +1,8 @@
 # Planner for finding the optimal schedule
 To-do:
-- Make a to-do list
+- Add support for exams
+- Add custom events (probably, a wrapper class would be the best option)
+- Support for preferences, additional constraints for finding a schedule
 
 ## Format of dates 
 ```json

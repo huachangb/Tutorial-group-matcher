@@ -4,8 +4,8 @@ from calendar_planner.custom_datetime import to_datetime
 from calendar_planner.courses.lecture import Lecture
 from calendar_planner.courses.practical_lecture import PracticalLecture
 from calendar_planner.courses.course import Course
+from calendar_planner.path_finder import create_graph_from_calendar, get_lecture_combinations, remove_edges_overlapping
 
-from calendar_planner.path_finder import get_lecture_combinations2
 
 class Calendar():
     def __init__(self):
@@ -89,6 +89,15 @@ class Calendar():
             self.add_course_from_excel(path=key, title=title)
             
     
-    def find_all_schedules(self):
+    def find_all_schedules(self, format: bool = False) -> pd.DataFrame:
         """ Finds all possible combinations using clique-based approach """
-        return get_lecture_combinations2(self)
+        G = create_graph_from_calendar(self)
+        remove_edges_overlapping(G, self)
+        df = get_lecture_combinations(G, self)
+
+        # removes all text except the group 
+        if format:
+            for col in df.columns:
+                df[col] = df[col].map(lambda x: x.split("---")[1])
+        
+        return df
