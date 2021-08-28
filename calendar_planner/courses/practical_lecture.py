@@ -17,6 +17,6 @@ class PracticalLecture(ClassBase):
         course = calendar.courses[course_title]
         for lecture in self.schedule:
             if course.overlaps(lecture["time_range"], group):
-                return False
-        return True
+                return True
+        return False
 

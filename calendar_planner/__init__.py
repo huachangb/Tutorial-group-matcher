@@ -1,4 +1,5 @@
 import pandas as pd
+from datetime import timedelta
 from calendar_planner.custom_datetime import to_datetime
 from calendar_planner.courses.lecture import Lecture
 from calendar_planner.courses.practical_lecture import PracticalLecture
@@ -13,6 +14,14 @@ class Calendar():
         
     def __str__(self):
         return "Calendar contains: " + ", ".join(self.courses.keys())
+
+    
+    def __len__(self):
+        return len(self.courses.keys())
+
+
+    def list_courses(self):
+        return list(self.courses.keys())
         
         
     def add_course(self, course):
@@ -51,13 +60,13 @@ class Calendar():
             schedule = [
                 {
                     "description": description,
-                    "start_date": start_date,
+                    "start_date": start_date + timedelta(days=7 * i),
                     "duration": duration,
                     "location": location
-                } for _ in weeks
+                } for i, _ in enumerate(weeks)
             ]
             
-            if class_type not in self.non_group_lectures and not any(x in description for x in self.optional):
+            if class_type not in self.non_group_lectures and not any(x.lower() in description for x in self.optional):
                 group = row["Groups"].replace("Group ", "")
                 practical = PracticalLecture(title, schedule, group)
                 course.add_practical_lecture(group, practical)

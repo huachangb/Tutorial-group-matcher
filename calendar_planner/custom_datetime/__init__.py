@@ -9,7 +9,9 @@ class DateTimeRange():
         self.end = start + timedelta(hours=hours)
     
     def overlaps(self, timerange) -> bool:
-        """ Checks if two time ranges overlap """        
+        """ Checks if two time ranges overlap """
+        if self.start.date() != timerange.start.date():
+            return False
         s1 = self.start <= timerange.start < self.end
         s2 = timerange.start <= self.start < timerange.end        
         return s1 or s2
