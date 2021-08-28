@@ -5,6 +5,8 @@ from calendar_planner.courses.lecture import Lecture
 from calendar_planner.courses.practical_lecture import PracticalLecture
 from calendar_planner.courses.course import Course
 
+from calendar_planner.path_finder import get_lecture_combinations2
+
 class Calendar():
     def __init__(self):
         self.courses = {}
@@ -86,3 +88,7 @@ class Calendar():
             title = value if isinstance(value, str) else key 
             self.add_course_from_excel(path=key, title=title)
             
+    
+    def find_all_schedules(self):
+        """ Finds all possible combinations using clique-based approach """
+        return get_lecture_combinations2(self)
