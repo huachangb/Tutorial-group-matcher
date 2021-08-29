@@ -1,10 +1,10 @@
 import pandas as pd
 from datetime import timedelta
-from calendar_planner.custom_datetime import to_datetime
-from calendar_planner.courses.lecture import Lecture
-from calendar_planner.courses.practical_lecture import PracticalLecture
-from calendar_planner.courses.course import Course
-from calendar_planner.path_finder import create_graph_from_calendar, get_lecture_combinations, remove_edges_overlapping
+from calendar_planner3.custom_datetime import to_datetime
+from calendar_planner3.courses.lecture import Lecture
+from calendar_planner3.courses.practical_lecture import PracticalLecture
+from calendar_planner3.courses.course import Course
+from calendar_planner3.path_finder import create_graph_from_calendar, get_lecture_combinations, remove_edges_overlapping
 
 
 class Calendar():

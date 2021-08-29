@@ -8,27 +8,36 @@ To-do:
 ```json
 [
     {
-        "description": str,
-        "start_date": datetime,
-        "duration_hours": int,
-        "duration_minutes": int
-        "location": str
+        "description": "", // must be a string
+        "start_date": "", // must be a datetime object
+        "duration_hours": 0, // must be an int
+        "duration_minutes": 0, // must be an int 
+        "location": "" // must be a string
     }
 ]
 ```
 
 # Usage
 ```python
-from calendar_planner import Calendar
-
-# dictionary of courses and path to file
+# path to files
 course_paths = {
-    "course name": "path-to-excel-file"
+    "course name": "path to file"
 }
 
-# create calendar
-cal = Calendar()
-cal.add_courses_from_excel(course_paths)
+# configuration
+lecture_types = ["hoorcollege"] # hoorcolleges etc
+practical_types = ["laptopcollege", "werkcollege", "presentatie"] # variabele colleges, zoals werkcolleges
+ignore = [] # type college om te negeren 
+ignore_description = ["optional", "reistijd"] # negeer college als deze in beschrijving voorkomen
+
+# create calendar 
+cal = Calendar(
+    lecture_types=lecture_types, 
+    practical_types=practical_types,
+    ignore=ignore,
+    ignore_description=ignore_description
+)
+cal.read_courses_from_excel(course_paths)
 
 # get all possible combinations
 cal.find_all_schedules()

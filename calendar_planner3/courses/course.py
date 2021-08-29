@@ -1,5 +1,5 @@
-from calendar_planner.courses.lecture import Lecture
-from calendar_planner.courses.practical_lecture import PracticalLecture
+from calendar_planner3.courses.lecture import Lecture
+from calendar_planner3.courses.practical_lecture import PracticalLecture
 
 class Course():
     def __init__(self, title: str) -> None:

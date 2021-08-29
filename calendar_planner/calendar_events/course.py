@@ -6,16 +6,25 @@ class Course():
         self.title = title
         self.lectures = []
         self.groups = {}
+        self.misc = []
         
     
     def __str__(self) -> str:
-        return f"{self.title}, with {len(self.lectures)} lecture(s) and {len(self.groups)} group(s)"
+        return f"{self.title}, with {len(self.lectures)} lecture(s), {len(self.groups)} group(s) and {len(self.misc)} misc"
+
+    
+    def number_of_groups(self) -> int:
+        return len(self.groups)
 
     
     def add_lecture(self, lecture: Lecture) -> None:
         """ Adds lecture to lectures """
         assert isinstance(lecture, Lecture)
         self.lectures.append(lecture)
+
+
+    def add_misc(self, misc) -> None:
+        self.misc.append(misc)
 
     
     def add_practical_lecture(self, group: str, practical_lecture: PracticalLecture) -> None:
@@ -31,7 +40,12 @@ class Course():
     def overlaps(self, cal_event, group: str) -> bool:
         """ Checks if schedule overlaps with the schedule of self """
         overlap_lectures = any(
-            lecture.overlaps(cal_event) for lecture in self.lectures
+            lecture.overlaps(cal_event) 
+            for lecture in self.lectures
         )
         overlap_practicals = self.groups[group].overlaps(cal_event)
-        return overlap_lectures or overlap_practicals
+        overlap_misc = any(
+            misc.overlaps(cal_event)
+            for misc in self.misc
+        )
+        return overlap_lectures or overlap_practicals or overlap_misc

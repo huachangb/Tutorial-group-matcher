@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from calendar_planner.constants import MONTHS
+from calendar_planner3.constants import MONTHS
 
 class DateTimeRange():
     """ Class for managing time ranges """
