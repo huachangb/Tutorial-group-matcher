@@ -1,5 +1,5 @@
 # Planner for finding the optimal schedule
-Python package to find schedules with a minimal number of overlapping lectures. 
+Python package to find schedules with a minimal number of overlapping lectures. See the jupyter notebook in this repository.
 
 ## Features
 - Searching for a schedule to limit the number of overlapping lectures 
