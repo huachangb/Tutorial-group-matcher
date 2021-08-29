@@ -26,3 +26,8 @@ def to_datetime(date_: str) -> str:
     """
     x = date_.split()
     return datetime(int(x[2]), dutch_month_to_num(x[1]), int(x[0]))
+
+
+def parse_time_string(time_str: str) -> datetime:
+    """ Parses time from string """
+    return datetime.strptime(time_str, "%H:%M")

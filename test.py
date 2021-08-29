@@ -2,9 +2,10 @@ from calendar_planner.schedule.datetime_range import DateTimeRange
 from calendar_planner.schedule.schedule_item import ScheduleItem
 from calendar_planner.schedule.schedule import Schedule
 from calendar_planner.calendar_events.calendar_event import CalendarEvent
-from calendar_planner.schedule.convert import dutch_month_to_num, parse_date, parse_datetime, parse_time, to_datetime
+from calendar_planner.schedule.convert import dutch_month_to_num, parse_date, parse_datetime, parse_time, parse_time_string, to_datetime
 from calendar_planner.constants import MONTHS
 from datetime import datetime
+import random
 
 #
 # TEST
@@ -19,6 +20,9 @@ assert all(dutch_month_to_num(key) == value
             for key, value in MONTHS.items())
 assert to_datetime("8 sep 2021").date() == datetime_1.date()
 
+hour = random.randint(3, 23)
+minute = random.randint(1, 59)
+assert parse_time_string(f"{hour}:{minute}").time() == datetime(year=2021, month=9, day=1, hour=hour, minute=minute).time()
 
 #
 # TEST
@@ -40,6 +44,16 @@ date_2 = DateTimeRange(datetime(year=2021, month=8, day=9, hour=4), 2)
 assert not date_1.overlaps(date_2), "should not overlap"
 assert not date_2.overlaps(date_1), "should not overlap"
 
+
+date_1 = DateTimeRange(datetime(year=2021, month=8, day=8, hour=14), 2)
+date_2 = DateTimeRange(datetime(year=1900, month=8, day=9, hour=14), 1)
+date_3 = DateTimeRange(datetime(year=1900, month=8, day=9, hour=9), 12)
+date_4 = DateTimeRange(datetime(year=1900, month=8, day=9, hour=20), 2)
+assert not date_1.within_range(date_2)
+assert date_2.within_range(date_1)
+assert date_1.within_range(date_3)
+assert date_2.within_range(date_3)
+assert not date_4.within_range(date_3)
 
 #
 # TEST
