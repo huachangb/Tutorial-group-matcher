@@ -1,57 +1,67 @@
-import pandas as pd
+from calendar_planner.calendar_events.course import Course
+from calendar_planner.calendar_events.lecture import Lecture
+from calendar_planner.calendar_events.practical_lecture import PracticalLecture
+from calendar_planner.schedule.convert import to_datetime
 from datetime import timedelta
-from calendar_planner.custom_datetime import to_datetime
-from calendar_planner.courses.lecture import Lecture
-from calendar_planner.courses.practical_lecture import PracticalLecture
-from calendar_planner.courses.course import Course
-from calendar_planner.path_finder import create_graph_from_calendar, get_lecture_combinations, remove_edges_overlapping
-
+import pandas as pd
 
 class Calendar():
-    def __init__(self):
+    def __init__(self, lecture_types: list = [], optional: list = [], ignore: list = [], ignore_description: list = []) -> None:
         self.courses = {}
-        self.non_group_lectures = ["Hoorcollege", "Vragenuur", "overig"]
-        self.optional = ["reistijd", "optional", "nan"]
-        self.exams = ["Tentamen", "Deeltoets", "Hertentamen"]
-        
-    def __str__(self):
-        return "Calendar contains: " + ", ".join(self.courses.keys())
+        self.events = []
+        self.config = {
+            "lecture_types": lecture_types,
+            "optional": optional,
+            "ignore": ignore,
+            "ignore_description": ignore_description
+        }
 
     
-    def __len__(self):
-        return len(self.courses.keys())
+    def __str__(self) -> str:
+        return "Calendar contains: " + ", ".join(self.courses.keys())
 
 
-    def list_courses(self):
+    def list_courses(self) -> list:
+        """ Returns list of courses """
         return list(self.courses.keys())
-        
-        
-    def add_course(self, course):
-        """ Add course to calendar """
+
+    
+    def number_of_courses(self) -> int:
+        """ Returns number of courses """
+        return len(self.courses)
+
+
+    def number_of_events(self) -> int:
+        """ Returns number of events, exluding courses """
+        return len(self.events)
+
+
+    def add_course(self, course) -> None:
+        """ Adds course to calendar """
         assert isinstance(course, Course)
         assert course.title not in self.courses
         self.courses[course.title] = course
-        
+
     
-    def add_course_from_excel(self, path: str, title: str = None) -> None:
+    def add_course_from_excel(self, path: str, title: str) -> None:
         """ Loads course from Excel file and is added to self
         
         Parameters:
             path: path to file
-            title: title of course, if none path name will be used
+            title: title of course
         
         """
-        cal = pd.read_excel(path)
-        cal = cal.loc[:,["Type", "Description", "Groups", "Locations", "Weeks", "StartTime", "Duration", "StartDate"]]\
-                    .assign(Groups=cal["Groups"].str.split(", "))\
+        df = pd.read_excel(path)
+        df = df.loc[:,["Type", "Description", "Groups", "Locations", "Weeks", "StartTime", "Duration", "StartDate"]]\
+                    .assign(Groups=df["Groups"].str.split(", "))\
                     .explode("Groups")
-        cal["StartDate"] = cal["StartDate"].map(to_datetime)
+        df["StartDate"] = df["StartDate"].map(to_datetime)
         
-        course = Course(title if isinstance(title, str) else path)
+        course = Course(title)
         
-        for _, row in cal.iterrows():
+        for _, row in df.iterrows():
             class_type = row["Type"]
-            if class_type in self.exams: continue
+            if class_type in self.config["ignore"]: continue
                 
             location = row["Locations"]
             weeks = row["Weeks"].split(",")
@@ -59,14 +69,21 @@ class Calendar():
             start_date = row["StartDate"].replace(hour=row["StartTime"])
             description = row["Description"]
             description = description.lower() if isinstance(description, str) else ""
+
+            if description in self.config["ignore_description"]:
+                continue
+
             schedule = [
                 {
                     "description": description,
-                    "start_date": start_date + timedelta(days=7 * i),
-                    "duration": duration,
+                    "start_date": start_date + timedelta(days=7 * int(week_number)),
+                    "duration_hours": duration,
+                    "duration_minutes": 0,
                     "location": location
-                } for i, _ in enumerate(weeks)
+                } for week_number in weeks
             ]
+
+            # leftover
             
             if class_type not in self.non_group_lectures and not any(x.lower() in description for x in self.optional):
                 group = row["Groups"].replace("Group ", "")
@@ -78,25 +95,3 @@ class Calendar():
                 
         
         self.courses[title] = course   
-        
-    
-    def add_courses_from_excel(self, filenames: dict) -> None:
-        """ Add multiple courses from a given dict. Dict must have the path as key 
-        and the course title as value. If value is None, then its key will be used as
-        course name"""
-        for key, value in filenames.items():
-            self.add_course_from_excel(path=value, title=key)
-            
-    
-    def find_all_schedules(self, format: bool = False) -> pd.DataFrame:
-        """ Finds all possible combinations using clique-based approach """
-        G = create_graph_from_calendar(self)
-        remove_edges_overlapping(G, self)
-        df = get_lecture_combinations(G, self)
-
-        # removes all text except the group 
-        if format:
-            for col in df.columns:
-                df[col] = df[col].map(lambda x: x.split("---")[1])
-        
-        return df

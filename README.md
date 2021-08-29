@@ -10,7 +10,8 @@ To-do:
     {
         "description": str,
         "start_date": datetime,
-        "duration": int,
+        "duration_hours": int,
+        "duration_minutes": int
         "location": str
     }
 ]

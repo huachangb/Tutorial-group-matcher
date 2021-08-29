@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from calendar_planner.constants import MONTHS
 
 class DateTimeRange():
     """ Class for managing time ranges """
@@ -29,7 +30,7 @@ def parse_date(datetime_str: str) -> str:
 
 def dutch_month_to_num(month: str) -> str:
     """ Converts shorthand notation for month to its numeric equivalent """
-    return {"jan": 1, "feb": 2, "mar": 3, "apr": 4, "mei": 5, "jun": 6, "jul": 7, "aug": 8, "sep": 9, "okt": 10, "nov": 11, "dec": 12}[month]
+    return MONTHS[month]
 
 
 def to_datetime(date_: str) -> str:
