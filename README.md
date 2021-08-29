@@ -38,7 +38,7 @@ Now, we can search for every possible schedule. This can be done by calling ```c
 Note that ```start_time``` and ```end_time``` should be in 24-hour notation, e.g. ```11:00```. This controls the possible schedules, such that no lecture is before [start_time] and no lecture is after [end_time]
 
 ```python
-calendar.find_all_schedules(
+cal.find_all_schedules(
     format_groups=True, 
     start_time="10:00", 
     end_time="17:00"
