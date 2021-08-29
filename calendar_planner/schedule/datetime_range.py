@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, time, timedelta
 from ..schedule.convert import parse_datetime
 
 class DateTimeRange():
@@ -19,3 +19,9 @@ class DateTimeRange():
         s1 = self.begin <= timerange.begin < self.end
         s2 = timerange.begin <= self.begin < timerange.end        
         return s1 or s2
+
+    def within_range(self, timerange) -> bool:
+        """ Checks if time range is between begin and end """
+        within_lower_limit = self.begin.time() >= timerange.begin.time()
+        within_upper_limit = self.end.time() <= timerange.end.time()
+        return within_lower_limit and within_upper_limit

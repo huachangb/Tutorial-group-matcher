@@ -15,3 +15,8 @@ class ScheduleItem():
     
     def overlaps(self, schedule_item) -> bool:
         return self.datetime_range.overlaps(schedule_item.datetime_range)
+
+
+    def within_range(self, time_range: DateTimeRange) -> bool:
+        """ Checks if schedule item within time range """
+        return self.datetime_range.within_range(time_range)

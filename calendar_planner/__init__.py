@@ -1,8 +1,9 @@
+from calendar_planner.schedule.datetime_range import DateTimeRange
 from .calendar_events.course import Course
 from .calendar_events.lecture import Lecture
 from .calendar_events.custom_event import CustomCalendarEvent
 from .calendar_events.practical_lecture import PracticalLecture
-from .schedule.convert import to_datetime
+from .schedule.convert import parse_time_string, to_datetime
 from .search_algorithms import search_by_cliques
 from datetime import timedelta
 
@@ -101,6 +102,11 @@ class Calendar():
                 course.add_lecture(lecture)
             elif class_type in self.config["practical_types"]:
                 group = row["Groups"].replace("Group ", "")
+
+                # fix for when group is split into subgroups
+                if len(group) == 2:
+                    group = group[0]
+
                 group_lecture = PracticalLecture(
                     title=title,
                     group=group,
@@ -140,9 +146,35 @@ class Calendar():
             print(f"Calendar already contains: {skipped}")
 
 
-    def find_all_schedules(self, format: bool = False) -> pd.DataFrame:
+    def find_all_schedules(self, format_groups: bool = False, start_time: str = None, end_time: str = None) -> pd.DataFrame:
         """ Finds all possible combinations using clique-based approach """
         df = search_by_cliques(self)
+
+        # get all schedules between time range
+        if start_time and end_time:
+            # create time range
+            time_start = parse_time_string(start_time)
+            time_end = parse_time_string(end_time)
+            time_range = DateTimeRange(time_start, time_end.hour - time_start.hour)
+
+            within_time_range = []
+
+            # for every combination, check if within time range
+            for index, row in df.iterrows():
+                groups_within_range = []
+
+                for value in row:
+                    course, group = value.split("---")
+                    groups_within_range.append(all(
+                        schedule_item.within_range(time_range) 
+                        for schedule_item in self.courses[course].groups[group].schedule
+                    ))
+
+                if all(groups_within_range):
+                    within_time_range.append(index)
+
+            df = df.loc[within_time_range,:].drop_duplicates()
+
 
         # removes all text except the group 
         if format:

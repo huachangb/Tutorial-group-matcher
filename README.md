@@ -1,25 +1,16 @@
 # Planner for finding the optimal schedule
-To-do:
-- Add support for exams
-- Add custom events (probably, a wrapper class would be the best option)
-- Support for preferences, additional constraints for finding a schedule
+Python package to find schedules with a minimal number of overlapping lectures. 
 
-## Format of dates 
-```json
-[
-    {
-        "description": "", // must be a string
-        "start_date": "", // must be a datetime object
-        "duration_hours": 0, // must be an int
-        "duration_minutes": 0, // must be an int 
-        "location": "" // must be a string
-    }
-]
-```
+## Features
+- Searching for a schedule to limit the number of overlapping lectures 
+- Searching within a given time frame
+- Adding custom events
 
 # Usage
+Firstly, we need to load the timetables for each course. This can be done by reading the corresponding Excel files.
+
 ```python
-# path to files
+# paths to files
 course_paths = {
     "course name": "path to file"
 }
@@ -38,7 +29,32 @@ cal = Calendar(
     ignore_description=ignore_description
 )
 cal.read_courses_from_excel(course_paths)
+```
 
-# get all possible combinations
-cal.find_all_schedules()
+Now, we can search for every possible schedule. This can be done by calling ```cal```'s method ```find_all_schedules```. This method takes 3 **optional** parameters and returns a Pandas DataFrame. 
+- format_groups: simplifies output
+- start_time = lower time limit
+- end_time = upper time limit
+Note that ```start_time``` and ```end_time``` should be in 24-hour notation, e.g. ```11:00```. This controls the possible schedules, such that no lecture is before [start_time] and no lecture is after [end_time]
+
+```python
+calendar.find_all_schedules(
+    format_groups=True, 
+    start_time="10:00", 
+    end_time="17:00"
+)
+```
+
+
+## Format of dates (for dev purposes)
+```json
+[
+    {
+        "description": "", 
+        "start_date": "",
+        "duration_hours": int,
+        "duration_minutes": int,
+        "location": ""
+    }
+]
 ```
