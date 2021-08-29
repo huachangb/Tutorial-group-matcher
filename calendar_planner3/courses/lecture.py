@@ -1,4 +1,4 @@
-from calendar_planner.courses.classBase import ClassBase
+from calendar_planner3.courses.classBase import ClassBase
 
 class Lecture(ClassBase):
     def __init__(self, course_title: str, schedule: list) -> None:

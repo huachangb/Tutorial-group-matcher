@@ -1,4 +1,4 @@
-from calendar_planner.courses.classBase import ClassBase
+from calendar_planner3.courses.classBase import ClassBase
 
 class PracticalLecture(ClassBase):
     def __init__(self, course_title: str, schedule: list, group: str) -> None:
@@ -9,7 +9,7 @@ class PracticalLecture(ClassBase):
     def add_lectures(self, schedule: list) -> None:
         """ Merges list of lectures """
         for lecture in schedule:
-            self.add_lecture_fixed(lecture)
+            self.add_formatted_lecture(lecture)
 
     
     def overlaps_with_course(self, calendar, course_title, group) -> bool:
@@ -17,6 +17,6 @@ class PracticalLecture(ClassBase):
         course = calendar.courses[course_title]
         for lecture in self.schedule:
             if course.overlaps(lecture["time_range"], group):
-                return False
-        return True
+                return True
+        return False
 

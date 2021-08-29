@@ -23,11 +23,6 @@ class ClassBase():
         self.type = "General"
 
 
-    def __str__(self) -> str:
-        """ Custom text for print() """
-        return f"{self.course} - {self.type}, from {parse_time(self.datetime_range.start)} to {parse_time(self.datetime_range.end)} on {parse_date(self.datetime)}"
-
-
     def __iter__(self):
         """ Allows iterating over class """
         self.__n = 0
@@ -53,8 +48,8 @@ class ClassBase():
         })
 
 
-    def add_lecture_fixed(self, lecture: dict):
-        """ Add a already formatted lecture to the list of lectures """
+    def add_formatted_lecture(self, lecture: dict):
+        """ Add an already formatted lecture to the list of lectures """
         self.schedule.append(lecture)
 
     
