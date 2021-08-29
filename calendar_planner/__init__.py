@@ -1,10 +1,9 @@
-from pandas.io.parquet import FastParquetImpl
-from calendar_planner.calendar_events.course import Course
-from calendar_planner.calendar_events.lecture import Lecture
-from calendar_planner.calendar_events.custom_event import CustomCalendarEvent
-from calendar_planner.calendar_events.practical_lecture import PracticalLecture
-from calendar_planner.schedule.convert import to_datetime
-from calendar_planner.search_algorithms import search_by_cliques
+from .calendar_events.course import Course
+from .calendar_events.lecture import Lecture
+from .calendar_events.custom_event import CustomCalendarEvent
+from .calendar_events.practical_lecture import PracticalLecture
+from .schedule.convert import to_datetime
+from .search_algorithms import search_by_cliques
 from datetime import timedelta
 
 import pandas as pd

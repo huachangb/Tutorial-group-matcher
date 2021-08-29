@@ -1,4 +1,4 @@
-from calendar_planner.calendar_events.calendar_event import CalendarEvent
+from ..calendar_events.calendar_event import CalendarEvent
 
 class CustomCalendarEvent(CalendarEvent):
     def __init__(self, title: str, schedule: list, description: str, low_priority: bool) -> None:

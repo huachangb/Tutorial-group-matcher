@@ -1,5 +1,5 @@
 from datetime import datetime
-from calendar_planner.schedule.datetime_range import DateTimeRange
+from ..schedule.datetime_range import DateTimeRange
 
 class ScheduleItem():
     def __init__(self, description: str, datetime_start: datetime, location: str, duration_hours: int, duration_minutes: int = 0) -> None:

@@ -1,4 +1,4 @@
-from calendar_planner.calendar_events.calendar_event import CalendarEvent
+from ..calendar_events.calendar_event import CalendarEvent
 
 class PracticalLecture(CalendarEvent):
     def __init__(self, title: str, group: str, schedule: list, description: str) -> None:
@@ -21,8 +21,3 @@ class PracticalLecture(CalendarEvent):
         """ Check if there is overlap with a couse """
         course = calendar.courses[course_title]
         return course.overlaps(self, group)
-        # for lecture in self.schedule:
-        #     if course.overlaps(lecture, group):
-        #         return True
-        
-        # return False

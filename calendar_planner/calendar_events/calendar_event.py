@@ -1,6 +1,6 @@
-from calendar_planner.schedule.schedule import Schedule
-from calendar_planner.schedule.schedule_item import ScheduleItem
-from calendar_planner.constants import NO_GROUP
+from ..schedule.schedule import Schedule
+from ..schedule.schedule_item import ScheduleItem
+from ..constants import NO_GROUP
 from datetime import datetime
 
 class CalendarEvent():

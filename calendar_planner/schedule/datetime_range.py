@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from calendar_planner.schedule.convert import parse_datetime
+from ..schedule.convert import parse_datetime
 
 class DateTimeRange():
     """ Class for managing time ranges """

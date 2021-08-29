@@ -1,4 +1,4 @@
-from calendar_planner.schedule.schedule_item import ScheduleItem
+from ..schedule.schedule_item import ScheduleItem
 
 class Schedule():
     def __init__(self) -> None:

@@ -1,5 +1,5 @@
 from datetime import datetime
-from calendar_planner.constants import MONTHS
+from ..constants import MONTHS
 
 def parse_time(datetime_str: datetime) -> str:
     """ Returns time in HH:MM format """
