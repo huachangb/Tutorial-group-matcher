@@ -1,4 +1,4 @@
-from calendar_planner.schedule.datetime_range import DateTimeRange
+from .schedule.datetime_range import DateTimeRange
 from .calendar_events.course import Course
 from .calendar_events.lecture import Lecture
 from .calendar_events.custom_event import CustomCalendarEvent
@@ -78,24 +78,21 @@ class Calendar():
                 continue
                 
             location = row["Locations"]
-            weeks = row["Weeks"].split(",")
+            weeks = list(map(int, row["Weeks"].split(",")))
             duration = row["Duration"]
             start_date = row["StartDate"].replace(hour=row["StartTime"])
 
             # create schedule
-            schedule = []
-            first_week_num = int(weeks[0])
-
-            for week_number in weeks:
-                # corrects date if week number doesn't start with 0
-                n = int(week_number) - first_week_num
-                schedule.append({
+            first_week_num = min(weeks)
+            schedule = [
+                {
                     "description": description,
-                    "start_date": start_date + timedelta(days=7 * n),
+                    "start_date": start_date + timedelta(days=7 * (week_number - first_week_num)),
                     "duration_hours": duration,
                     "duration_minutes": 0,
                     "location": location
-                })
+                } for week_number in weeks
+            ]
 
             if class_type in self.config["lecture_types"]:
                 lecture  = Lecture(
@@ -177,7 +174,8 @@ class Calendar():
                 if all(groups_within_range):
                     within_time_range.append(index)
 
-            df = df.loc[within_time_range,:].drop_duplicates()
+            df = df.loc[within_time_range,:]
+            df.index = pd.RangeIndex(len(df.index))
 
 
         # removes all text except the group 
