@@ -75,7 +75,7 @@ class Calendar():
             description_in_ignore = any(x in description for x in self.config["ignore_description"])
             
             if class_type_in_ignore or description_in_ignore:
-                    continue
+                continue
                 
             location = row["Locations"]
             weeks = row["Weeks"].split(",")
@@ -83,15 +83,19 @@ class Calendar():
             start_date = row["StartDate"].replace(hour=row["StartTime"])
 
             # create schedule
-            schedule = [
-                {
+            schedule = []
+            first_week_num = int(weeks[0])
+
+            for week_number in weeks:
+                # corrects date if week number doesn't start with 0
+                n = int(week_number) - first_week_num
+                schedule.append({
                     "description": description,
-                    "start_date": start_date + timedelta(days=7 * int(week_number)),
+                    "start_date": start_date + timedelta(days=7 * n),
                     "duration_hours": duration,
                     "duration_minutes": 0,
                     "location": location
-                } for week_number in weeks
-            ]
+                })
 
             if class_type in self.config["lecture_types"]:
                 lecture  = Lecture(
@@ -151,7 +155,7 @@ class Calendar():
         df = search_by_cliques(self)
 
         # get all schedules between time range
-        if start_time and end_time:
+        if isinstance(start_time, str) and isinstance(end_time, str):
             # create time range
             time_start = parse_time_string(start_time)
             time_end = parse_time_string(end_time)
@@ -177,7 +181,7 @@ class Calendar():
 
 
         # removes all text except the group 
-        if format:
+        if format_groups:
             for col in df.columns:
                 df[col] = df[col].map(lambda x: x.split("---")[1])
         
