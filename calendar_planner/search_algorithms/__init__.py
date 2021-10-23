@@ -60,6 +60,11 @@ def get_lecture_combinations(G: nx.Graph, calendar) -> pd.DataFrame:
         for clique in nx.find_cliques(G) 
         if len(clique) == cal_size
     ])
+
+    # case: no combinations that do not overlap
+    if len(combis) == 0:
+        return pd.DataFrame(data=[], columns=sorted(calendar.list_courses()))
+
     combis.sort(axis=1)
     return pd.DataFrame(data=combis, columns=sorted(calendar.list_courses()))
 

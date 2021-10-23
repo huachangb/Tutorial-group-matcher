@@ -80,7 +80,12 @@ class Calendar():
             location = row["Locations"]
             weeks = list(map(int, row["Weeks"].split(",")))
             duration = row["Duration"]
-            start_date = row["StartDate"].replace(hour=row["StartTime"])
+
+            # parse time from hours, should also account for floats
+            start_time = row["StartTime"]
+            hour = int(start_time)
+            minutes = int((start_time - hour) * 60)
+            start_date = row["StartDate"].replace(hour=hour, minute=minutes)
 
             # create schedule
             first_week_num = min(weeks)
