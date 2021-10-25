@@ -15,7 +15,7 @@ class Calendar():
         self.events = []
         
         ignore = [] if ignore == None else ignore
-        ignore_description = [] if ignore_description == None else ignore
+        ignore_description = [] if ignore_description == None else ignore_description
 
         self.config = {
             "lecture_types": lecture_types,
