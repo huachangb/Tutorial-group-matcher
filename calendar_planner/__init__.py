@@ -10,9 +10,13 @@ from datetime import timedelta
 import pandas as pd
 
 class Calendar():
-    def __init__(self, lecture_types: list, practical_types: list, ignore: list = [], ignore_description: list = []) -> None:
+    def __init__(self, lecture_types: list, practical_types: list, ignore: list = None, ignore_description: list = None) -> None:
         self.courses = {}
         self.events = []
+        
+        ignore = [] if ignore == None else ignore
+        ignore_description = [] if ignore_description == None else ignore
+
         self.config = {
             "lecture_types": lecture_types,
             "practical_types": practical_types,
