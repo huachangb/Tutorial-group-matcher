@@ -1,11 +1,10 @@
-from datetime import datetime, time, timedelta
+from datetime import datetime, timedelta
 from ..schedule.convert import parse_datetime
 
 class DateTimeRange():
     """ Class for managing time ranges """
     def __init__(self, begin_date: datetime, hours: int, minutes: int = 0) -> None:
-        """ Initializes class by setting the start and end
-        of the time range"""
+        """ Initializes class by setting the start and end of the time range"""
         self.begin = begin_date
         self.end = begin_date + timedelta(hours=hours, minutes=minutes)
 
