@@ -1,13 +1,13 @@
 # Planner for finding the optimal schedule
-Python package to find schedules with a minimal number of overlapping lectures. See the jupyter notebook in this repository.
+Python module to find schedules with a minimal number of overlapping lectures. 
 
 ## Features
-- Searching for a schedule to limit the number of overlapping lectures 
-- Searching within a given time frame
+- Search for a schedule to limit the number of overlapping lectures 
+- Search within a given range of time
 - Adding custom events
 
-# Usage
-Firstly, we need to load the timetables for each course. This can be done by reading the corresponding Excel files.
+# How to use this?
+A demo in a Jupyter Notebook is included in the repository. Firstly, we need to load the timetables for each course. This can be done by reading the corresponding Excel files.
 
 ```python
 # paths to files
@@ -45,16 +45,5 @@ cal.find_all_schedules(
 )
 ```
 
-
-## Format of dates (for dev purposes)
-```json
-[
-    {
-        "description": "", 
-        "start_date": "",
-        "duration_hours": int,
-        "duration_minutes": int,
-        "location": ""
-    }
-]
-```
+## To-do
+- add an option to search for a schedule that minimizes overlap (generalizing the current algorithm)
