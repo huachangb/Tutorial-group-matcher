@@ -7,7 +7,7 @@ Python module to find schedules with a minimal number of overlapping lectures.
 - Adding custom events
 
 # How to use this?
-A demo in a Jupyter Notebook is included in the repository. Firstly, we need to load the timetables for each course. This can be done by reading the corresponding Excel files.
+A demo in a Jupyter Notebook is included in the repository (demo excel files will be added in the future). Firstly, we need to load the timetables for each course. This can be done by reading the corresponding Excel files.
 
 ```python
 # paths to files
@@ -35,7 +35,7 @@ Now, we can search for every possible schedule. This can be done by calling ```c
 - format_groups: simplifies output
 - start_time = lower time limit
 - end_time = upper time limit
-Note that ```start_time``` and ```end_time``` should be in 24-hour notation, e.g. ```11:00```. This controls the possible schedules, such that no lecture is before [start_time] and no lecture is after [end_time]
+Note that ```start_time``` and ```end_time``` should be in 24-hour notation, e.g. ```11:00```. This controls the possible schedules, such that no lecture is before <start_time> and no lecture is after <end_time>
 
 ```python
 cal.find_all_schedules(
