@@ -15,10 +15,10 @@ class CEventTypes(Enum):
 class CCollectionTypes(Enum):
     """ Collection of events types
     
-    Types: LECTURES, PRACTICAL_SEMINAR_GROUPS, OTHER
+    Types: LECTURES, PRACTICAL_SEMINAR_GROUP, OTHER
     """
     LECTURES = auto()
-    PRACTICAL_SEMINAR_GROUPS = auto()
+    PRACTICAL_SEMINAR_GROUP = auto()
     OTHER = auto()
 
 

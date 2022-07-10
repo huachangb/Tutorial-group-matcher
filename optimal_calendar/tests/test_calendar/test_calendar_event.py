@@ -1,7 +1,6 @@
 import pytest
 
 from ...calendar.calendar_event import CalendarEvent
-from ...schedule.datetimerange import Datetimerange
 from datetime import datetime
 
 
@@ -59,18 +58,6 @@ class TestCalendarEvent():
         """
         assert schedule_item_1.overlaps(schedule_item_2) == result
         assert schedule_item_2.overlaps(schedule_item_1) == result
-
-    
-    @pytest.mark.parametrize("schedule_item,dtrange,result", [
-        (
-            CalendarEvent(title="", begin_date=datetime(2020, 5, 17, 1, 0), hours=1, minutes=0),
-            Datetimerange(datetime(2020, 5, 17, 2, 0), 2, 0),
-            False
-        )
-    ])
-    def test_compatible_with_dtrange(self, schedule_item: CalendarEvent, dtrange: Datetimerange, result: bool):
-        assert schedule_item.overlaps(dtrange) == result
-        assert dtrange.overlaps(schedule_item) == result
 
 
     @pytest.mark.parametrize("cal_event,result", [
