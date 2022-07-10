@@ -1,6 +1,6 @@
 import pytest
 
-from ...calendar.convert import dutch_month_to_num, parse_time_string, to_datetime
+from ...calendar_structures.convert import dutch_month_to_num, parse_time_string, to_datetime
 from datetime import datetime
 
 def test_dutch_month_to_num():

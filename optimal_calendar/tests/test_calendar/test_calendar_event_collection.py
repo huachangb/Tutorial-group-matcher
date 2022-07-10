@@ -1,8 +1,8 @@
 import pytest
 
-from ...calendar.calendar_event import CalendarEvent
-from ...calendar.calendar_event_collection import CalendarEventCollection
-from ...calendar.constants import CCollectionTypes
+from ...calendar_structures.calendar_event import CalendarEvent
+from ...calendar_structures.calendar_event_collection import CalendarEventCollection
+from ...calendar_structures.constants import CCollectionTypes
 from datetime import datetime
 
 class TestCalendarEventCollection():

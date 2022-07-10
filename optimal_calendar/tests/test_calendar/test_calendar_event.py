@@ -1,6 +1,6 @@
 import pytest
 
-from ...calendar.calendar_event import CalendarEvent
+from ...calendar_structures.calendar_event import CalendarEvent
 from datetime import datetime
 
 

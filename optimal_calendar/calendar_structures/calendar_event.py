@@ -8,6 +8,14 @@ from .constants import CEventTypes
 class CalendarEvent():
     """
     A calendar event. This may be any activity. 
+
+    Methods
+        __init__
+        __str__
+        parse_datetime
+        get_time
+        overlaps
+        in_range
     """
     def __init__(
             self, 

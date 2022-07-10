@@ -8,9 +8,15 @@ from .constants import CCollectionTypes
 from .calendar_event import CalendarEvent
 
 class CalendarEventCollection():
-    """ Collection of CalendarEvents. 
-    Examples: courses or practical seminar groups (see other files)
-    Abstract structure
+    """ Collection of CalendarEvents
+
+    Methods:
+        __init__
+        __iter__
+        __next__
+        events
+        add_event
+        overlaps
     """
     def __init__(
             self, 
