@@ -36,7 +36,8 @@ class Datetimerange():
 
 
     def within_range(self, dtimerange: Datetimerange) -> bool:
-        """ Checks if time range is between begin and end """
+        """ Checks if current instance is between begin and end of the given
+        dtrange"""
         within_lower_limit = self.begin.time() >= dtimerange.begin.time()
         within_upper_limit = self.end.time() <= dtimerange.end.time()
         return within_lower_limit and within_upper_limit

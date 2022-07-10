@@ -1,5 +1,7 @@
 from __future__ import annotations
 from .constants import CEventTypes
+
+
 from .calendar_event import CalendarEvent
 
 class PracticalSeminar(CalendarEvent):

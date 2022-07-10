@@ -1,6 +1,7 @@
 """ Contains class definition for CalendarEvent """
 
 from __future__ import annotations
+from datetime import datetime
 from typing import Union
 from .constants import CEventTypes, NO_GROUP
 from ..schedule.schedule import Schedule
@@ -9,6 +10,62 @@ from ..schedule.datetimerange import Datetimerange
 
 
 class CalendarEvent():
+    """
+    A calendar event. This may be any activity. 
+    """
+    def __init__(
+            self, 
+            title: str,
+            begin_date: datetime,
+            hours: int,
+            description: str = "", 
+            location: str = "",
+            minutes: int = 0,
+            event_type: int = CEventTypes.OTHER,
+            compulsory: bool = True
+        ) -> None:
+        """ Initialize class. 
+        Note to self: self.date is a Datetimerange object, 
+        so it's not just a date. 
+        """
+        self.title = title
+        self.description = description
+        self.location = location
+        self.date = Datetimerange(begin_date, hours, minutes)
+        self.type = event_type
+        self.compulsory = compulsory
+
+    
+    def __str__(self) -> str:
+        """ Returns global description of current instance """
+        description_txt = self.description if self.description else "N/A description"
+        return f"{description_txt} at {self.location} on " + str(self.date)
+
+    
+    def overlaps(self, activity: Union[CalendarEvent, Datetimerange]) -> bool:
+        """
+        Returns True if current instance overlaps with <activity>,
+        otherwise returns False
+        """
+        if isinstance(activity, CalendarEvent):
+            return self.date.overlaps(activity.date)
+        
+        # case: activity is an instance of Datetimerange
+        return self.date.overlaps(activity)
+
+    
+    def in_timerange(self, dtimerange: Datetimerange) -> bool:
+        """ 
+        Returns True if the given <dtimerange> falls within a given
+        time range. Otherwise, returns False.
+
+        Note: The date property of Datetimerange will be ignored.
+        """
+        return self.date.within_range(dtimerange)
+    
+        
+
+class CalendarEvent1():
     """ Any activity, whether it be a lecture or doctors appointment """
     def __init__(self, title: str, schedule: list, description: str = "") -> None:
         self.title = title

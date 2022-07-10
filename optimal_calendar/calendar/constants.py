@@ -1,13 +1,24 @@
 from enum import Enum, auto
 
 class CEventTypes(Enum):
-    """
-    Act likes an enum
+    """ Calendar event type
+    Act likes an enum. Exists in order to reduce
+    the amount of inheritance used. 
+
     Types: LECTURE, PRACTICAL_SEMINAR, OTHER
     """
     LECTURE = auto()
     PRACTICAL_SEMINAR = auto()
-    CUSTOM = auto()
+    OTHER = auto()
+
+
+class CCollectionTypes(Enum):
+    """ Collection of events types
+    
+    Types: LECTURES, PRACTICAL_SEMINAR_GROUPS, OTHER
+    """
+    LECTURES = auto()
+    PRACTICAL_SEMINAR_GROUPS = auto()
     OTHER = auto()
 
 

@@ -4,3 +4,4 @@ __pycache__
 *.xlsx
 *.ipynb
 .pytest_cache
+*_bp
