@@ -1,5 +1,6 @@
-from ..calendar_events.lecture import Lecture
-from ..calendar_events.practical_lecture import PracticalLecture
+from .lecture import Lecture
+from .calendar_event import CalendarEvent
+from .practical_seminar import PracticalSeminar
 
 class Course():
     def __init__(self, title: str) -> None:
@@ -23,14 +24,14 @@ class Course():
         self.lectures.append(lecture)
 
 
-    def add_misc(self, misc) -> None:
+    def add_misc(self, misc: CalendarEvent) -> None:
         self.misc.append(misc)
 
     
-    def add_practical_lecture(self, group: str, practical_lecture: PracticalLecture) -> None:
+    def add_practical_lecture(self, group: str, practical_lecture: PracticalSeminar) -> None:
         """ Adds practical lecture. If there is already a record of a group, 
         <practical_lecture> will be merged with this instance """
-        assert isinstance(practical_lecture, PracticalLecture)
+        assert isinstance(practical_lecture, PracticalSeminar)
         if group not in self.groups:
             self.groups[group] = practical_lecture
             return

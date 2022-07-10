@@ -1,6 +1,11 @@
-from ..calendar_events.calendar_event import CalendarEvent
+from .constants import CEventTypes
+from .calendar_event import CalendarEvent
 
 class Lecture(CalendarEvent):
+    """
+    wraps calendar event
+    """
     def __init__(self, title: str, schedule: list, description: str) -> None:
         super().__init__(title, schedule, description=description)
-        self.type = "Hoorcollege"
+        self.type = CEventTypes.LECTURE
+        

@@ -1,10 +1,10 @@
-from .schedule.datetime_range import DateTimeRange
-from .calendar_events.course import Course
-from .calendar_events.lecture import Lecture
-from .calendar_events.custom_event import CustomCalendarEvent
-from .calendar_events.practical_lecture import PracticalLecture
-from .schedule.convert import parse_time_string, to_datetime
-from .search_algorithms import search_by_cliques
+from ..schedule.datetimerange import Datetimerange
+from .course import Course
+from .lecture import Lecture
+from .custom_event import CustomCalendarEvent
+from .practical_seminar import PracticalSeminar
+from .convert import parse_time_string, to_datetime
+from ..search_algorithms.clique import search_by_cliques
 from datetime import timedelta
 
 import pandas as pd
@@ -117,7 +117,7 @@ class Calendar():
                 if len(group) == 2:
                     group = group[0]
 
-                group_lecture = PracticalLecture(
+                group_lecture = PracticalSeminar(
                     title=title,
                     group=group,
                     description=description,
@@ -165,7 +165,7 @@ class Calendar():
             # create time range
             time_start = parse_time_string(start_time)
             time_end = parse_time_string(end_time)
-            time_range = DateTimeRange(time_start, time_end.hour - time_start.hour)
+            time_range = Datetimerange(time_start, time_end.hour - time_start.hour)
 
             within_time_range = []
 
