@@ -1,4 +1,3 @@
-from tenacity import retry
 import pytest
 
 from ...calendar_structures.constants import CCollectionTypes, CEventTypes
