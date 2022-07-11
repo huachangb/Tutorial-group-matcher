@@ -32,6 +32,7 @@ class TestCalendarEventCollection():
         for index, cal_event in enumerate(cal_events):
             coll.add_event(cal_event)
             assert len(coll.events) == index + 1
+            assert cal_event in coll
         
 
     def test_overlaps(self) -> None:

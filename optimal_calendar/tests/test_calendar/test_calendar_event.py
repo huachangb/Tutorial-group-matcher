@@ -97,3 +97,18 @@ class TestCalendarEvent():
         with only being concerned with hours
         """
         assert dtimerange1.in_range(dtimerange2) == result
+
+    
+    @pytest.mark.parametrize("cal_event,result", [
+        (
+            CalendarEvent(title="", begin_date=datetime(2020, 5, 17, 1, 0), hours=1, minutes=0),
+            True
+        ),
+        (
+            CalendarEvent(title="", begin_date=datetime(2020, 5, 17, 4, 0), hours=2, minutes=0), 
+            False
+        )
+    ])
+    def test_eq(self, cal_event: CalendarEvent, result: bool) -> None:
+        cal_event_def = CalendarEvent(title="", begin_date=datetime(2020, 5, 17, 1, 0), hours=1, minutes=0)
+        assert (cal_event_def == cal_event) == result

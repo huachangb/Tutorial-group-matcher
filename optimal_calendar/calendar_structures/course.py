@@ -35,13 +35,13 @@ class Course():
     @property
     def lectures(self):
         """ Returns list of lectures """
-        return self.__lectures.copy()
+        return copy.deepcopy(self.__lectures)
 
 
     @property
     def misc(self):
         """ Returns misc. events """
-        return self.__misc.copy()
+        return copy.deepcopy(self.__misc)
 
 
     @property

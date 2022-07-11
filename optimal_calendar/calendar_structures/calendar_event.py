@@ -12,6 +12,7 @@ class CalendarEvent():
     Methods
         __init__
         __str__
+        __eq__
         parse_datetime
         get_time
         overlaps
@@ -43,6 +44,15 @@ class CalendarEvent():
         """ Returns global description of current instance """
         description_txt = self.description if self.description else "N/A description"
         return f"{description_txt} at {self.location} on " + str(self.date)
+
+    
+    def __eq__(self, __o: CalendarEvent) -> bool:
+        """ Only equal if all fields match, assumes only used in combination with another
+        CalendarEvent instance """
+        return self.title == __o.title and self.description == __o.description and \
+            self.location == __o.location and self.type == __o.type and \
+            self.compulsory == __o.compulsory and self.begin == __o.begin and \
+            self.end == __o.end
 
 
     @staticmethod

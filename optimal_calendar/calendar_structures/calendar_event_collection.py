@@ -2,6 +2,7 @@
 
 TODO:
 - add method: remove event
+- add way to check if certain event has been added
 """
 
 from .constants import CCollectionTypes
@@ -14,6 +15,7 @@ class CalendarEventCollection():
         __init__
         __iter__
         __next__
+        __contains__
         events
         add_event
         overlaps
@@ -51,6 +53,11 @@ class CalendarEventCollection():
             return self.__events[self.__n - 1]
         else:
             raise StopIteration
+
+    
+    def __contains__(self, __o: object) -> bool:
+        """ Returns True if <__o> is an element of <events> """
+        return __o in self.__events
 
 
     @property
