@@ -8,20 +8,20 @@ TODO:
 
 from .calendar_event import CalendarEvent
 from .course import Course
-from .constants import CEventTypes
+from .constants import CEventTypes, DEFAULT_LECTURE_TYPES_CAL, DEFAULT_PRACTICAL_SEMINAR_TYPES_CAL
 from .convert import to_datetime
 from datetime import timedelta
 
 import pandas as pd
 
 class CCalendar():
-    def __init__(self, lecture_types: list, prac_sem_types: list) -> None:
+    def __init__(self, lecture_types: list = None, prac_sem_types: list = None) -> None:
         self.courses = {} # list of Course objects
         self.events = [] # list of CalendarEvent objects
         self.misc = [] # list of CalendarEventCollection objects
         self.config = {
-            "lecture types": lecture_types,
-            "practical seminar types": prac_sem_types
+            "lecture types": lecture_types if lecture_types != None else DEFAULT_LECTURE_TYPES_CAL,
+            "practical seminar types": prac_sem_types if prac_sem_types != None else DEFAULT_PRACTICAL_SEMINAR_TYPES_CAL
         }
     
 
@@ -32,7 +32,7 @@ class CCalendar():
     
     def load_course_from_excel(self, path: str, title: str, ignore_type: list = None, ignore_description: list = None) -> None:
         """ Loads course from Excel file and is added to self """
-        assert title not in self.courses
+        assert title not in self.courses, f"This calendar already contains a course with the name '{title}'"
 
         # set default values
         if ignore_type == None:
@@ -72,9 +72,9 @@ class CCalendar():
 
             # determine event type
             event_type = CEventTypes.OTHER
-            if class_type in self.config["lecture_types"]:
+            if class_type in self.config["lecture types"]:
                 event_type = CEventTypes.LECTURE
-            elif class_type in self.config["practical_types"]:
+            elif class_type in self.config["practical seminar types"]:
                 event_type = CEventTypes.PRACTICAL_SEMINAR
 
 
@@ -87,7 +87,7 @@ class CCalendar():
                     # TODO: edge case: new year?
                     begin_date=start_date + timedelta(days=7 * (week_number - first_week_num)),
                     hours=duration,
-                    minutes=0, # TODO: is dit correct???
+                    minutes=0, # is this correct?
                     event_type=event_type
                 )
 
@@ -95,8 +95,7 @@ class CCalendar():
                 if event_type == CEventTypes.PRACTICAL_SEMINAR:
                     group = row["Groups"].replace("Group ", "")
 
-                    # TODO: is this what we want??
-                    # fix case where group is split into subgroups
+                    # fixes case where group is split into subgroups
                     if len(group) == 2:
                         group = group[0]
                     course.add_practical_seminar_event(cal_event=cal_event, group=group)

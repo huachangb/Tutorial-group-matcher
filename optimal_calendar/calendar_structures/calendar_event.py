@@ -43,7 +43,7 @@ class CalendarEvent():
     def __str__(self) -> str:
         """ Returns global description of current instance """
         description_txt = self.description if self.description else "N/A description"
-        return f"{description_txt} at {self.location} on " + str(self.date)
+        return f"{description_txt} at {self.location} on " + str(self.begin)
 
     
     def __eq__(self, __o: CalendarEvent) -> bool:

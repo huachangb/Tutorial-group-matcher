@@ -16,6 +16,7 @@ class CalendarEventCollection():
         __iter__
         __next__
         __contains__
+        __len__
         events
         add_event
         overlaps
@@ -58,6 +59,11 @@ class CalendarEventCollection():
     def __contains__(self, __o: object) -> bool:
         """ Returns True if <__o> is an element of <events> """
         return __o in self.__events
+
+    
+    def __len__(self) -> int:
+        """ Returns number of events in current instance """
+        return len(self.__events)
 
 
     @property

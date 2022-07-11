@@ -29,7 +29,7 @@ class Course():
     
     def __str__(self) -> str:
         """ Returns description of instance """
-        return f"{self.title}, with {len(self.lectures)} lecture(s), {len(self.groups)} group(s) and {len(self.misc)} misc. events"
+        return f"{self.title}, with {len(self.lectures)} lecture(s), {len(self.__practical_seminars)} group(s) and {len(self.misc)} misc. events"
 
 
     @property

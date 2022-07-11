@@ -1,5 +1,7 @@
 from enum import Enum, auto
 
+from argon2 import DEFAULT_HASH_LENGTH
+
 class CEventTypes(Enum):
     """ Calendar event type
     Act likes an enum. Exists in order to reduce
@@ -37,3 +39,6 @@ MONTHS = {
     "nov": 11,
     "dec": 12
 }
+
+DEFAULT_LECTURE_TYPES_CAL = ["hoorcollege"]
+DEFAULT_PRACTICAL_SEMINAR_TYPES_CAL = ["laptopcollege", "werkcollege", "presentatie"]
