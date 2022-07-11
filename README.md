@@ -1,7 +1,7 @@
 # Planner for finding the optimal schedule
 Python module to find schedules with a minimal number of overlapping lectures. 
 
-## This branch contains the previous version of this project. The code has been largely restructured in the main branch and is therefore recommended to be used. 
+## This branch contains the previous version of this project. Most code has been rewritten, which is now the main branch. It is recommended to use the code in the main branch, although both versions should produce the same output. 
 
 ## Features
 - Search for a schedule to limit the number of overlapping lectures 
