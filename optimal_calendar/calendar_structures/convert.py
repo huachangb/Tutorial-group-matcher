@@ -18,3 +18,10 @@ def to_datetime(date_: str) -> str:
 def parse_time_string(time_str: str) -> datetime:
     """ Parses time from string """
     return datetime.strptime(time_str, "%H:%M")
+
+
+def list_to_lower(arr) -> list:
+    """ Returns list where are elements are in lowercase. 
+    Assumes that <arr> only contains strings
+    """
+    return [x.lower() for x in arr]

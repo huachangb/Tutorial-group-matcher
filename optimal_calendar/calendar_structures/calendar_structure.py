@@ -9,7 +9,7 @@ TODO:
 from .calendar_event import CalendarEvent
 from .course import Course
 from .constants import CEventTypes, DEFAULT_LECTURE_TYPES_CAL, DEFAULT_PRACTICAL_SEMINAR_TYPES_CAL
-from .convert import parse_time_string, to_datetime
+from .convert import list_to_lower, parse_time_string, to_datetime
 from ..search_algorithms.clique_search import find_cliques_cal
 from datetime import datetime, timedelta
 
@@ -21,8 +21,8 @@ class CCalendar():
         self.events = [] # list of CalendarEvent objects
         self.misc = [] # list of CalendarEventCollection objects
         self.config = {
-            "lecture types": lecture_types if lecture_types != None else DEFAULT_LECTURE_TYPES_CAL,
-            "practical seminar types": prac_sem_types if prac_sem_types != None else DEFAULT_PRACTICAL_SEMINAR_TYPES_CAL
+            "lecture types": list_to_lower(lecture_types) if lecture_types != None else DEFAULT_LECTURE_TYPES_CAL,
+            "practical seminar types": list_to_lower(prac_sem_types) if prac_sem_types != None else DEFAULT_PRACTICAL_SEMINAR_TYPES_CAL
         }
     
 
@@ -38,8 +38,13 @@ class CCalendar():
         # set default values
         if ignore_type == None:
             ignore_type = list()
+        else:
+            ignore_type = list_to_lower(ignore_type)
+
         if ignore_description == None:
             ignore_description = list()
+        else:
+            ignore_description = list_to_lower(ignore_description)
 
         df = pd.read_excel(path)
         df = df.loc[:,["Type", "Description", "Groups", "Locations", "Weeks", "StartTime", "Duration", "StartDate"]]\

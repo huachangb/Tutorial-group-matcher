@@ -1,6 +1,5 @@
 from enum import Enum, auto
 
-from argon2 import DEFAULT_HASH_LENGTH
 
 class CEventTypes(Enum):
     """ Calendar event type

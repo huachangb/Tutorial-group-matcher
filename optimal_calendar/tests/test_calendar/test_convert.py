@@ -1,7 +1,13 @@
 import pytest
 
-from ...calendar_structures.convert import dutch_month_to_num, parse_time_string, to_datetime
+from ...calendar_structures.convert import dutch_month_to_num, list_to_lower, parse_time_string, to_datetime
 from datetime import datetime
+
+
+def test_list_to_lower():
+    l = ["A", "b", "DvD"]
+    l_lower = ["a", "b", "dvd"]
+    assert list_to_lower(l) == l_lower
 
 def test_dutch_month_to_num():
     months = {

@@ -32,10 +32,21 @@ def find_cliques_cal(cal) -> nx.Graph:
     )
 
     for u, v in seminar_combinations:
-        group_u = courses[u[0]].practical_seminars[u[1]]
-        group_v = courses[v[0]].practical_seminars[v[1]]
+        course_u = courses[u[0]]
+        course_v = courses[v[0]]
+
+        # check if schedules of practical seminars overlap
+        group_u = course_u.practical_seminars[u[1]]
+        group_v = course_v.practical_seminars[v[1]]
+        seminars_overlap = group_u.overlaps(group_v)
+
+        # check if schedule of group overlaps with any lecture or misc event of the
+        # course the other group belongs to
+        course_v_overlap = course_v.lectures.overlaps(group_u) or course_v.misc.overlaps(group_u)
+        course_u_overlap = course_u.lectures.overlaps(group_v) or course_u.misc.overlaps(group_v)
         
-        if not group_u.overlaps(group_v):
+        # only add edge if there is no overlap
+        if not (seminars_overlap or course_v_overlap or course_u_overlap):
             G.add_edge(u, v)
     
     # find cliques

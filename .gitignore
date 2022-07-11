@@ -5,3 +5,6 @@ __pycache__
 *.ipynb
 .pytest_cache
 *_bp
+schedules
+*.csv
+!module_demo.ipynb
