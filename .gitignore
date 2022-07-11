@@ -3,3 +3,8 @@ __pycache__
 *.vscode
 *.xlsx
 *.ipynb
+.pytest_cache
+*_bp
+schedules
+*.csv
+!module_demo.ipynb

@@ -1,0 +1,2 @@
+# Testing
+The tests included in this repository are __not__ thorough, neither are they complete.The library [Pytest](https://github.com/pytest-dev/pytest) is used in this project. To run the tests, use the command ```pytest``` in your terminal. Every file should have a test file associated with them. All folders, files and functions/classes for testing should begin with ```test```.

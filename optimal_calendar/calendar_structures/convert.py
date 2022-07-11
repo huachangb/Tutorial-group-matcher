@@ -1,18 +1,5 @@
 from datetime import datetime
-from ..constants import MONTHS
-
-def parse_time(datetime_str: datetime) -> str:
-    """ Returns time in HH:MM format """
-    return datetime.strftime(datetime_str, "%H:%M")
-
-
-def parse_date(datetime_str: datetime) -> str:
-    """ Returns date in yyyy-mm-dd format """
-    return datetime.strftime(datetime_str, "%Y-%m-%d")
-
-
-def parse_datetime(datetime_str: str) -> str:
-    return f"{parse_date(datetime_str)} {parse_time(datetime_str)}"
+from .constants import MONTHS
 
 
 def dutch_month_to_num(month: str) -> str:
@@ -31,3 +18,10 @@ def to_datetime(date_: str) -> str:
 def parse_time_string(time_str: str) -> datetime:
     """ Parses time from string """
     return datetime.strptime(time_str, "%H:%M")
+
+
+def list_to_lower(arr) -> list:
+    """ Returns list where are elements are in lowercase. 
+    Assumes that <arr> only contains strings
+    """
+    return [x.lower() for x in arr]
