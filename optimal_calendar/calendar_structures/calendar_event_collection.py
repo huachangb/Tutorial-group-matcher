@@ -5,6 +5,8 @@ TODO:
 - add way to check if certain event has been added
 """
 
+from __future__ import annotations
+from typing import Union
 from .constants import CCollectionTypes
 from .calendar_event import CalendarEvent
 
@@ -20,6 +22,7 @@ class CalendarEventCollection():
         events
         add_event
         overlaps
+        in_range
     """
     def __init__(
             self, 
@@ -78,9 +81,16 @@ class CalendarEventCollection():
         self.__events.append(cal_event)
 
 
-    def overlaps(self, cal_event: CalendarEvent) -> bool:
+    def overlaps(self, cal_event: Union[CalendarEvent, CalendarEventCollection]) -> bool:
         """ 
         Returns True if <cal_event> has overlap with any of the events of the current instance.
         Else, returns False 
         """
-        return any(event.overlaps(cal_event) for event in self.__events)
+        return any(cal_event.overlaps(event) for event in self.__events)
+
+
+    def in_range(self, dtrange: CalendarEvent) -> bool:
+        """
+        Returns True if <self> is in <dtrange>, only considers hours
+        """
+        return all(event.in_range(dtrange) for event in self.__events)

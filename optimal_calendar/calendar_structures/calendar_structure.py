@@ -9,8 +9,9 @@ TODO:
 from .calendar_event import CalendarEvent
 from .course import Course
 from .constants import CEventTypes, DEFAULT_LECTURE_TYPES_CAL, DEFAULT_PRACTICAL_SEMINAR_TYPES_CAL
-from .convert import to_datetime
-from datetime import timedelta
+from .convert import parse_time_string, to_datetime
+from ..search_algorithms.clique_search import find_cliques_cal
+from datetime import datetime, timedelta
 
 import pandas as pd
 
@@ -85,7 +86,9 @@ class CCalendar():
                 cal_event = CalendarEvent(
                     title="",
                     # TODO: edge case: new year?
-                    begin_date=start_date + timedelta(days=7 * (week_number - first_week_num)),
+                    begin_date=start_date + timedelta(
+                        days= 7 * (week_number - first_week_num)
+                    ),
                     hours=duration,
                     minutes=0, # is this correct?
                     event_type=event_type
@@ -106,3 +109,59 @@ class CCalendar():
                 
         
         self.courses[title] = course
+
+
+    def find_all_schedules(
+            self, 
+            format_output: bool = True, 
+            start_time: str = None, 
+            end_time: str = None
+        ) -> pd.DataFrame:
+        """
+        TEXT
+        """
+        df = find_cliques_cal(self)
+
+        # get all schedules between time range
+        if isinstance(start_time, str) and isinstance(end_time, str):
+            # create time range, only hours/minutes are important
+            time_start = parse_time_string(start_time)
+            time_end = parse_time_string(end_time)
+            dtrange = CalendarEvent(
+                title="", 
+                begin_date=datetime(1900, 1, 1, 0, 0), 
+                hours=0
+            )
+            dtrange.begin = time_start
+            dtrange.end = time_end
+
+            course_groups = {}
+
+            for pair in set(df.values.flatten()):
+                if pair[0] not in course_groups:
+                    course_groups[pair[0]] = []
+                course_groups[pair[0]].append(pair)
+            
+            # find groups that are in time range
+            groups_in_dtrange = set()
+
+            for course, groups in course_groups.items():
+                course_group_data = self.courses[course].practical_seminars
+
+                for course_, group in groups:
+                    if course_group_data[group].in_range(dtrange):
+                        groups_in_dtrange.add((course_, group))
+
+            # filter combinations
+            mask = [
+                set(row.values).issubset(groups_in_dtrange)
+                for _, row in df.iterrows()
+            ]
+            df = df[mask].reset_index(drop=True)
+        elif start_time != None or end_time != None:
+            print("IGNORE time: Invalid begin or end time")
+
+        if format_output:
+            df = df.applymap(lambda x: x[1])
+        
+        return df
