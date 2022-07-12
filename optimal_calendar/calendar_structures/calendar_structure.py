@@ -2,7 +2,6 @@
 TODO:
 - add location for later checking (SP, REC are not compatible if they're right after the other)
 - properly handle edge case new year when adding all duplicating events to create a 'schedule'
-- properly handle cases where events don't last whole hours
 - think about whether we want that subgroups are handled as one group (e.g. A1, A2 fall both under A)
 """
 
@@ -11,9 +10,11 @@ from .course import Course
 from .constants import CEventTypes, DEFAULT_LECTURE_TYPES_CAL, DEFAULT_PRACTICAL_SEMINAR_TYPES_CAL
 from .convert import list_to_lower, parse_time_string, to_datetime
 from ..search_algorithms.clique_search import find_cliques_cal
-from datetime import datetime, timedelta
 
+from datetime import datetime, timedelta
 import pandas as pd
+import math
+
 
 class CCalendar():
     def __init__(self, lecture_types: list = None, prac_sem_types: list = None) -> None:
@@ -69,6 +70,8 @@ class CCalendar():
             # location = row["Locations"]
             weeks = list(map(int, row["Weeks"].split(",")))
             duration = row["Duration"]
+            duration_hours = math.floor(duration)
+            duration_minutes = int((duration - duration_hours) * 60)
 
             # parse time from hours, should also account for floats
             start_time = row["StartTime"]
@@ -94,8 +97,8 @@ class CCalendar():
                     begin_date=start_date + timedelta(
                         days= 7 * (week_number - first_week_num)
                     ),
-                    hours=duration,
-                    minutes=0, # is this correct?
+                    hours=duration_hours,
+                    minutes=duration_minutes,
                     event_type=event_type
                 )
 
@@ -123,7 +126,7 @@ class CCalendar():
             end_time: str = None
         ) -> pd.DataFrame:
         """
-        TEXT
+        Finds all combinations of practical seminar groups such that there is no overlap between them.
         """
         df = find_cliques_cal(self)
 
