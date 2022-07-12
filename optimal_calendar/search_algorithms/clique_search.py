@@ -9,10 +9,13 @@ from itertools import combinations
 
 
 def find_cliques_cal(cal) -> nx.Graph:
-    """ 
+    """ Finds all possible combinations of practical seminar groups that have
+    no overlap. 
+
     Creates graph from calendar such that all practical seminar groups
     are nodes and there exists an edge between two nodes iff
-    they do not overlap. 
+    they do not overlap. Then, by searching for cliques with a 
+    cardinality equal to the number of courses we find the desired combinations.
     """
     # get all practical seminar groups
     practical_seminar_groups = []
