@@ -13,3 +13,21 @@ Methods:
 - get_time
 - overlaps
 - in_range
+
+
+### CalendarEventCollection
+A collection of CalendarEvent instances. E.g. practical seminar groups or a set of lectures.
+
+### Course
+A collection of all relevant events related to an academic course. Contains lectures, misc. events and a set of practical seminar groups with their schedules. 
+
+### CCalendar
+A collection of calendar events, courses and calendareventcollections
+
+### Helper functions
+
+## Search algorithms
+### Clique search
+The algorithm is defined in ```find_cliques_cal(cal) -> pd.DataFrame```. Edges are left out if a practical seminar group has any overlap with any calendar event of the other group.
+
+### Generalized clique search
