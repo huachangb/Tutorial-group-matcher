@@ -15,11 +15,7 @@ cal = CCalendar()
 cal.load_course_from_excel(path="path to file", title="course 1")
 cal.load_course_from_excel(path="path to another file", title="course 2")
 
-results = cal.find_all_schedules(
-    start_time="11:00",
-    end_time="19:00"
-)
-print(len(results))
+results = cal.find_all_schedules() # results is an instance of a Pandas DataFrame
 results.head(10)
 ```
 
