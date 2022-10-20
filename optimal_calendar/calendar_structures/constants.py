@@ -27,7 +27,7 @@ NO_GROUP = "NOGROUP"
 MONTHS = {
     "jan": 1,
     "feb": 2,
-    "mar": 3,
+    "mrt": 3,
     "apr": 4,
     "mei": 5,
     "jun": 6,
