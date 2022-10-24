@@ -25,8 +25,5 @@ results.head(10)
 - add support for custom events
 - add generalized algorithm for finding cliques
 
-## Disclaimer
-I'm not responsible if the code produces wrong results. 
-
 ## Old version
 The code in the main branch is a result of rewriting nearly the entire project. The original code can be found in the [backup branch](https://github.com/huachangb/optimal_calendar/tree/backup).
