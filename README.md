@@ -1,4 +1,4 @@
-# Planner for finding the optimal schedule for courses at the UvA
+# Planner for finding the optimal schedule for courses at the UvA [deprecated]
 Python module to find schedules with a minimal number of overlapping lectures.
 
 ## Features
