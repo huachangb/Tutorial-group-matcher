@@ -18,9 +18,3 @@ cal.load_course_from_excel(path="path to another file", title="course 2")
 results = cal.find_all_schedules() # results is an instance of a Pandas DataFrame
 results.head(10)
 ```
-
-## To-do
-- add more tests
-- include an updated demo notebook (old notebook can be found [here](https://github.com/huachangb/optimal_calendar/tree/backup))
-- add support for custom events
-- add generalized algorithm for finding cliques
